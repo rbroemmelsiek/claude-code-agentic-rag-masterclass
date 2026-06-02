@@ -1,0 +1,48 @@
+# Invoked via: /onboard
+# Gemini CLI equivalent of .claude/commands/onboard.md
+
+description = "Onboard into the codebase (scan repo, read docs, summarize)"
+
+prompt = """
+You are onboarding into the CC-Rag-Tutorial-0.2 application. Follow the process below, using the injected context.
+
+## Process
+
+1. **Scan structure** — Review the tracked files listing.
+2. **Read key files** — Review CLAUDE.md, PRD.md, and PROGRESS.md below.
+3. **Check state** — Review git status and recent commits below.
+
+## Output
+
+Provide a brief summary:
+- What this project does
+- Tech stack
+- How it's organised
+- Current branch and recent activity
+
+---
+
+## Tracked files
+
+!{git ls-files}
+
+## Git status
+
+!{git status}
+
+## Recent commits
+
+!{git log -10 --oneline}
+
+## CLAUDE.md
+
+@{CLAUDE.md}
+
+## PRD.md
+
+@{PRD.md}
+
+## PROGRESS.md
+
+@{PROGRESS.md}
+"""

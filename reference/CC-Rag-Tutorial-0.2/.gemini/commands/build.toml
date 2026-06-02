@@ -1,0 +1,28 @@
+# Invoked via: /build .agent/plans/1.module-1-app-shell.md
+# Gemini CLI equivalent of .claude/commands/build.md
+
+description = "Build from a plan file (pass path as argument)"
+
+prompt = """
+# Build
+
+Read and execute the plan at: {{args}}
+
+If {{args}} is a file path, read that file completely before making any changes.
+
+## Process
+
+1. **Read the entire plan** — Understand all tasks, dependencies, and success criteria.
+2. **Execute tasks in order** — Implement each task following project conventions in CLAUDE.md. Verify syntax and imports after each change.
+3. **Run any validation steps** — If the plan includes tests or validation commands, run them. Fix issues before proceeding.
+4. **Report completion** — Summarise what was done:
+   - Tasks completed
+   - Files created/modified
+   - Test results (if applicable)
+   - Any deviations from plan and why
+5. **Update PROGRESS.md** — Mark completed work in PROGRESS.md when the plan is done.
+
+## Project rules
+
+@{CLAUDE.md}
+"""
