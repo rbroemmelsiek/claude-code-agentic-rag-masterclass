@@ -4,6 +4,7 @@ from datetime import datetime
 from app.dependencies import get_current_user, User
 from app.db.supabase import get_supabase_client
 from app.models.schemas import ThreadCreate, ThreadResponse, ThreadUpdate
+from app.services import openai_service
 
 router = APIRouter(prefix="/threads", tags=["threads"])
 
@@ -24,9 +25,13 @@ async def create_thread(
     """Create a new thread."""
     supabase = get_supabase_client()
 
+    # Create OpenAI thread
+    openai_thread_id = openai_service.create_thread()
+
     now = datetime.utcnow().isoformat()
     result = supabase.table("threads").insert({
         "user_id": current_user.id,
+        "openai_thread_id": openai_thread_id,
         "title": thread_data.title or "New Chat",
         "created_at": now,
         "updated_at": now,
@@ -91,12 +96,19 @@ async def delete_thread(
     """Delete a thread."""
     supabase = get_supabase_client()
 
-    result = supabase.table("threads").select("id").eq("id", thread_id).eq("user_id", current_user.id).single().execute()
+    result = supabase.table("threads").select("id, openai_thread_id").eq("id", thread_id).eq("user_id", current_user.id).single().execute()
 
     if not result.data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Thread not found"
         )
+
+    # Delete OpenAI thread if it exists
+    if result.data.get("openai_thread_id"):
+        try:
+            openai_service.delete_thread(result.data["openai_thread_id"])
+        except Exception as e:
+            print(f"Error deleting OpenAI thread: {e}")
 
     supabase.table("threads").delete().eq("id", thread_id).execute()

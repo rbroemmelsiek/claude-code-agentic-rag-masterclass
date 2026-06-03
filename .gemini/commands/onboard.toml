@@ -1,24 +1,50 @@
 # Invoked via: /onboard
-# Gemini CLI equivalent of .claude/commands/onboard.md
+# Markdown spec: onboard.md (same folder)
+# Gemini CLI / Antigravity CLI equivalent of .claude/commands/onboard.md
 
-description = "Onboard into the codebase (scan repo, read docs, summarize)"
+description = "Onboard into the RAG masterclass repo (scan, docs, git state, MCP-aware summary)"
 
 prompt = """
-You are onboarding into this RAG masterclass repository. Follow the process below, using the injected context.
+You are onboarding into the **Cloud Code Agentic RAG Masterclass** repository using **Gemini CLI** or **Antigravity CLI** (`agy`). Follow CLAUDE.md for all implementation rules.
+
+## Tooling context
+
+- **CLI:** `gemini` today; **Antigravity CLI** (`agy`) is the successor — `agy plugin import gemini` migrates MCP and settings.
+- **Context files:** CLAUDE.md (rules), GEMINI.md (CLI notes), PRD.md (spec), PROGRESS.md (module status).
+- **Plans:** `.agent/plans/` — use `/build` with a plan path when the user asks to implement.
+- **Do not start Module 2+ or run `/build` unless the user explicitly requests it.**
+
+## Model
+
+Use the model currently selected in the session (check footer or `/model`). For this onboarding task, a **fast** model is sufficient. Note the model name in your summary.
+
+## Google Developer Knowledge MCP
+
+If `google-developer-knowledge` is connected (`/mcp list`), you may call:
+- `search_documents` / `get_documents` for official Google developer docs
+- `answer_query` (preview) for grounded Q&A from the corpus
+
+Use it only for **Google product/API** questions relevant to the stack. For Supabase, FastAPI, React, OpenAI/OpenRouter, LangSmith — rely on repo files below, not MCP.
+
+If MCP is missing or errored, say so in the summary and point to: https://developers.google.com/knowledge/mcp
 
 ## Process
 
-1. **Scan structure** — Review the tracked files listing.
-2. **Read key files** — Review CLAUDE.md, PRD.md, and PROGRESS.md below.
-3. **Check state** — Review git status and recent commits below.
+1. **Scan structure** — Review tracked files listing below; note frontend/, backend/, .agent/plans/, reference/.
+2. **Read key files** — CLAUDE.md, GEMINI.md, PRD.md, PROGRESS.md (injected below).
+3. **Check state** — Git status and recent commits below.
+4. **MCP check** — Report Developer Knowledge MCP status if you can infer it from session tools; otherwise note "verify with /mcp list".
 
 ## Output
 
-Provide a brief summary:
+Brief summary only (no implementation):
 - What this project does
 - Tech stack
-- How it's organised
+- How it is organised
 - Current branch and recent activity
+- Module progress (from PROGRESS.md)
+- Recommended next step (wait for user before building)
+- CLI + model + MCP status
 
 ---
 
@@ -37,6 +63,10 @@ Provide a brief summary:
 ## CLAUDE.md
 
 @{CLAUDE.md}
+
+## GEMINI.md
+
+@{GEMINI.md}
 
 ## PRD.md
 

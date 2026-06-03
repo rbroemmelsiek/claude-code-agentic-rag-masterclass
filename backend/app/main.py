@@ -5,6 +5,7 @@ import traceback
 
 from app.config import get_settings
 from app.routers import auth, threads, chat
+from app.services.openai_service import get_or_create_assistant
 
 settings = get_settings()
 
@@ -13,6 +14,16 @@ app = FastAPI(
     description="Backend API for the RAG Masterclass application",
     version="1.0.0"
 )
+
+
+@app.on_event("startup")
+async def startup_event():
+    try:
+        assistant_id = get_or_create_assistant()
+        print(f"RAG Assistant ready: {assistant_id}")
+    except Exception as e:
+        print(f"Warning: Failed to initialize RAG Assistant: {e}")
+
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,0 +1,31 @@
+{
+  "admin": {
+    "extensions": {
+      "enabled": true
+    }
+  },
+  "mcp": {
+    "allowed": [
+      "google-developer-knowledge",
+      "chrome-devtools",
+      "adk-docs-mcp"
+    ]
+  },
+  "mcpServers": {
+    "google-developer-knowledge": {
+      "httpUrl": "https://developerknowledge.googleapis.com/mcp",
+      "authProviderType": "google_credentials",
+      "oauth": {
+        "scopes": ["https://www.googleapis.com/auth/cloud-platform"]
+      },
+      "timeout": 30000,
+      "headers": {
+        "X-goog-user-project": "YOUR_GCP_PROJECT_ID"
+      }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}

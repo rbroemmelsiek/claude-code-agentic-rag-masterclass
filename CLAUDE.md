@@ -36,5 +36,16 @@ RAG app with chat (default) and document ingestion interfaces. Config via env va
 3. **Validate** - Test and verify the implementation works correctly. Use browser testing where applicable via an appropriate MCP
 4. **Iterate** - Fix any issues found during validation
 
+## Managing services
+
+| Environment | Start | Stop | Docs |
+|-------------|-------|------|------|
+| **Linux / cloud / WSL** | `./scripts/start-services.sh` | `./scripts/stop-services.sh` | `CLOUD.md` |
+| **Windows (local)** | `powershell -File scripts/start-all.ps1` | `powershell -File scripts/stop-all.ps1` | `CLOUD.md` (Windows section) |
+
+Verify: `curl http://localhost:8000/health` and open http://localhost:5173
+
+On native Windows, prefer PowerShell for `npm` and service scripts (Git Bash `npm` often produces no output).
+
 ## Progress
 Check PROGRESS.md for current module status. Update it as you complete tasks.

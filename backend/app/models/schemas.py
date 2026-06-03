@@ -9,6 +9,7 @@ class ThreadCreate(BaseModel):
 class ThreadResponse(BaseModel):
     id: str
     user_id: str
+    openai_thread_id: str | None = None
     title: str
     created_at: datetime
     updated_at: datetime
@@ -26,6 +27,7 @@ class MessageResponse(BaseModel):
     id: str
     thread_id: str
     user_id: str
+    openai_message_id: str | None = None
     role: str
     content: str
     created_at: datetime

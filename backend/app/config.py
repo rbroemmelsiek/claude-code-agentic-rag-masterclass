@@ -10,6 +10,7 @@ class Settings(BaseSettings):
 
     # OpenAI
     openai_api_key: str
+    openai_assistant_id: str = ""
     openai_vector_store_id: str = ""
 
     # LangSmith

@@ -17,9 +17,9 @@ Track your progress through the masterclass. Update this file as you complete mo
 - [x] Task 5: Frontend Setup (Vite + Tailwind + shadcn/ui)
 - [x] Task 6: Frontend Supabase Client + utils
 - [x] Task 7: Auth UI + Hook (AuthForm, useAuth)
-- [x] Task 8: OpenAI Responses API Service
-- [x] Task 9: Thread API (CRUD endpoints)
-- [x] Task 10: Chat API with SSE Streaming
+- [x] Task 8: OpenAI Responses API Service (Refined: Stateful Conversations)
+- [x] Task 9: Thread API (CRUD endpoints with OpenAI sync)
+- [x] Task 10: Chat API with SSE Streaming (Stateful)
 - [x] Task 11: Thread List UI + api.ts
 - [x] Task 12: Chat View UI with streaming
 - [x] Task 13: App Assembly + Layout (ChatPage, App, routing)

@@ -1,0 +1,24 @@
+{
+  "admin": {
+    "extensions": {
+      "enabled": true
+    }
+  },
+  "mcp": {
+    "allowed": [
+      "google-developer-knowledge",
+      "chrome-devtools",
+      "adk-docs-mcp"
+    ]
+  },
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--browser-url=http://127.0.0.1:9333"
+      ]
+    }
+  }
+}
