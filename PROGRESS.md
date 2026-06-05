@@ -1,8 +1,9 @@
 # Progress
 
-Track your progress through the masterclass. Update this file as you complete modules - Claude Code reads this to understand where you are in the project.
+Track your progress through the masterclass. Agents: read this for **current module** and **validation status**; use links for setup and test detail.
 
 ## Convention
+
 - `[ ]` = Not started
 - `[-]` = In progress
 - `[x]` = Completed
@@ -10,6 +11,7 @@ Track your progress through the masterclass. Update this file as you complete mo
 ## Modules
 
 ### Module 1: App Shell + Observability
+
 - [x] Task 1: Backend Skeleton (FastAPI, config, health endpoint, venv)
 - [x] Task 2: Supabase Client module
 - [x] Task 3: Database Schema (SQL migration with RLS)
@@ -17,7 +19,7 @@ Track your progress through the masterclass. Update this file as you complete mo
 - [x] Task 5: Frontend Setup (Vite + Tailwind + shadcn/ui)
 - [x] Task 6: Frontend Supabase Client + utils
 - [x] Task 7: Auth UI + Hook (AuthForm, useAuth)
-- [x] Task 8: OpenAI Responses API Service (Refined: Stateful Conversations)
+- [x] Task 8: OpenAI Responses API Service (Stateful Conversations)
 - [x] Task 9: Thread API (CRUD endpoints with OpenAI sync)
 - [x] Task 10: Chat API with SSE Streaming (Stateful)
 - [x] Task 11: Thread List UI + api.ts
@@ -26,23 +28,54 @@ Track your progress through the masterclass. Update this file as you complete mo
 - [x] Task 14: LangSmith Tracing
 - [x] Task 15: PowerShell Helper Scripts
 
+**Status:** Complete
+
+**Validation:** API 21/21, E2E pass (2026-06-03) — [details](.agent/validation/module-1-results.md)
+
 ### Module 2: BYO Retrieval + Memory
+
 - [ ] Not started
 
 ### Module 3: Record Manager
+
 - [ ] Not started
 
 ### Module 4: Metadata Extraction
+
 - [ ] Not started
 
 ### Module 5: Multi-Format Support
+
 - [ ] Not started
 
 ### Module 6: Hybrid Search & Reranking
+
 - [ ] Not started
 
 ### Module 7: Additional Tools
+
 - [ ] Not started
 
 ### Module 8: Sub-Agents
+
 - [ ] Not started
+
+## Validation log
+
+| Module | Date | API | E2E | Notes |
+|--------|------|-----|-----|-------|
+| 1 | 2026-06-03 | 21/21 | pass | Thread isolation 404 fix; see module-1-results.md |
+
+## Agent pointers
+
+- **Credentials / env:** `CLOUD.md`
+- **Start / stop services:** `CLAUDE.md` → Managing services
+- **Plans:** `.agent/plans/`
+- **Module 1 test detail:** `.agent/validation/module-1-results.md`
+- **Full API/E2E suite (later modules):** `reference/CC-Rag-Tutorial-0.2/.agent/validation/full-suite.md`
+
+## Service URLs
+
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8000
+- Health: http://localhost:8000/health

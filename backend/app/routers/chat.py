@@ -5,6 +5,7 @@ from datetime import datetime
 
 from app.dependencies import get_current_user, User
 from app.db.supabase import get_supabase_client
+from app.db.threads import get_thread_for_user
 from app.models.schemas import MessageCreate, MessageResponse
 from app.services import openai_service
 
@@ -14,15 +15,7 @@ router = APIRouter(prefix="/threads/{thread_id}", tags=["chat"])
 async def verify_thread_access(thread_id: str, user_id: str) -> dict:
     """Verify the user has access to the thread and return thread data."""
     supabase = get_supabase_client()
-    result = supabase.table("threads").select("*").eq("id", thread_id).eq("user_id", user_id).single().execute()
-
-    if not result.data:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Thread not found"
-        )
-
-    return result.data
+    return get_thread_for_user(supabase, thread_id, user_id)
 
 
 @router.get("/messages", response_model=list[MessageResponse])

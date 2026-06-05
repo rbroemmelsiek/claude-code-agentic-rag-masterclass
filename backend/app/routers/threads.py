@@ -3,6 +3,7 @@ from datetime import datetime
 
 from app.dependencies import get_current_user, User
 from app.db.supabase import get_supabase_client
+from app.db.threads import get_thread_for_user
 from app.models.schemas import ThreadCreate, ThreadResponse, ThreadUpdate
 from app.services import openai_service
 
@@ -25,7 +26,6 @@ async def create_thread(
     """Create a new thread."""
     supabase = get_supabase_client()
 
-    # Create OpenAI thread
     openai_thread_id = openai_service.create_thread()
 
     now = datetime.utcnow().isoformat()
@@ -53,15 +53,7 @@ async def get_thread(
 ):
     """Get a specific thread."""
     supabase = get_supabase_client()
-    result = supabase.table("threads").select("*").eq("id", thread_id).eq("user_id", current_user.id).single().execute()
-
-    if not result.data:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Thread not found"
-        )
-
-    return result.data
+    return get_thread_for_user(supabase, thread_id, current_user.id)
 
 
 @router.patch("/{thread_id}", response_model=ThreadResponse)
@@ -72,18 +64,18 @@ async def update_thread(
 ):
     """Update a thread's title."""
     supabase = get_supabase_client()
-
-    existing = supabase.table("threads").select("id").eq("id", thread_id).eq("user_id", current_user.id).single().execute()
-    if not existing.data:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Thread not found"
-        )
+    get_thread_for_user(supabase, thread_id, current_user.id, columns="id")
 
     result = supabase.table("threads").update({
         "title": thread_data.title,
         "updated_at": datetime.utcnow().isoformat(),
-    }).eq("id", thread_id).execute()
+    }).eq("id", thread_id).eq("user_id", current_user.id).execute()
+
+    if not result.data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Thread not found",
+        )
 
     return result.data[0]
 
@@ -95,20 +87,14 @@ async def delete_thread(
 ):
     """Delete a thread."""
     supabase = get_supabase_client()
+    row = get_thread_for_user(
+        supabase, thread_id, current_user.id, columns="id, openai_thread_id"
+    )
 
-    result = supabase.table("threads").select("id, openai_thread_id").eq("id", thread_id).eq("user_id", current_user.id).single().execute()
-
-    if not result.data:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Thread not found"
-        )
-
-    # Delete OpenAI thread if it exists
-    if result.data.get("openai_thread_id"):
+    if row.get("openai_thread_id"):
         try:
-            openai_service.delete_thread(result.data["openai_thread_id"])
+            openai_service.delete_thread(row["openai_thread_id"])
         except Exception as e:
             print(f"Error deleting OpenAI thread: {e}")
 
-    supabase.table("threads").delete().eq("id", thread_id).execute()
+    supabase.table("threads").delete().eq("id", thread_id).eq("user_id", current_user.id).execute()
