@@ -13,9 +13,11 @@ class Settings(BaseSettings):
     openai_assistant_id: str = ""
     openai_vector_store_id: str = ""
 
-    # LangSmith
+    # LangSmith (tracing is on when langsmith_api_key is set)
     langsmith_api_key: str = ""
     langsmith_project: str = "rag-masterclass"
+    langsmith_tracing: bool = True
+    langsmith_endpoint: str = "https://api.smith.langchain.com"
 
     # CORS
     cors_origins: list[str] = ["http://localhost:5173"]
