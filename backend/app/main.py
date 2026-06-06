@@ -46,7 +46,14 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok"}
+    from app.services.openai_service import _get_tools
+    tools = _get_tools()
+    return {
+        "status": "ok",
+        "rag_enabled": bool(tools),
+        "vector_store_id": settings.openai_vector_store_id or None,
+        "tool_choice": "required" if tools else None,
+    }
 
 
 app.include_router(auth.router)

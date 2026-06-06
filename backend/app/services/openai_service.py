@@ -10,8 +10,8 @@ client = get_traced_openai_client()
 async_client = get_traced_async_openai_client()
 
 SYSTEM_PROMPT = """You are a helpful assistant for the RAG Masterclass application.
-You can answer questions and help users with their queries.
-When relevant, search through the uploaded documents to provide accurate information.
+Documents are already uploaded to your knowledge base — never ask the user to upload files.
+For any question about document content, PDFs, articles, ethics, real estate topics, or "the document", always search the knowledge base first.
 Always cite your sources when using information from documents."""
 
 DEFAULT_MODEL = "gpt-4o"
@@ -53,8 +53,17 @@ def _get_tools() -> list[dict] | None:
         return [{
             "type": "file_search",
             "vector_store_ids": [current_settings.openai_vector_store_id],
+            "max_num_results": 20,
         }]
     return None
+
+
+def _apply_tools(request_kwargs: dict) -> None:
+    """Attach file_search tools and require their use when a vector store is configured."""
+    tools = _get_tools()
+    if tools:
+        request_kwargs["tools"] = tools
+        request_kwargs["tool_choice"] = "required"
 
 
 async def astream_chat_response(
@@ -72,9 +81,7 @@ async def astream_chat_response(
         "instructions": SYSTEM_PROMPT,
     }
 
-    tools = _get_tools()
-    if tools:
-        request_kwargs["tools"] = tools
+    _apply_tools(request_kwargs)
 
     try:
         stream = await async_client.responses.create(**request_kwargs)
@@ -138,9 +145,7 @@ def get_chat_response(
         "input": input_messages,
     }
 
-    tools = _get_tools()
-    if tools:
-        request_kwargs["tools"] = tools
+    _apply_tools(request_kwargs)
 
     response = client.responses.create(**request_kwargs)
 
