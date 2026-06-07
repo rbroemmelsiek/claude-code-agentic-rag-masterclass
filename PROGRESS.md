@@ -30,7 +30,7 @@ Track your progress through the masterclass. Agents: read this for **current mod
 
 **Status:** Complete
 
-**Validation:** API 21/21, E2E pass (2026-06-03) — [details](.agent/validation/module-1-results.md)
+**Validation:** API 21/21, E2E pass (2026-06-03); RAG suite available — [details](.agent/validation/module-1-results.md)
 
 ### Module 2: BYO Retrieval + Memory
 
@@ -62,9 +62,9 @@ Track your progress through the masterclass. Agents: read this for **current mod
 
 ## Validation log
 
-| Module | Date | API | E2E | Notes |
-|--------|------|-----|-----|-------|
-| 1 | 2026-06-03 | 21/21 | pass | Thread isolation 404 fix; see module-1-results.md |
+| Module | Date | API | RAG | E2E | Notes |
+|--------|------|-----|-----|-----|-------|
+| 1 | 2026-06-06 | 21/21 | 13/13 EXCELLENT | pass | Full validate-all re-run; api-smoke-test dotenv fix; see rag-latest.json |
 
 ## Agent pointers
 
@@ -72,6 +72,7 @@ Track your progress through the masterclass. Agents: read this for **current mod
 - **Start / stop services:** `CLAUDE.md` → Managing services
 - **Plans:** `.agent/plans/`
 - **Module 1 test detail:** `.agent/validation/module-1-results.md`
+- **RAG validation:** `scripts/rag-validation.py`, `scripts/validate-all.ps1`, `.agent/validation/rag-validation-playbook.md`
 - **Full API/E2E suite (later modules):** `reference/CC-Rag-Tutorial-0.2/.agent/validation/full-suite.md`
 
 ## Service URLs

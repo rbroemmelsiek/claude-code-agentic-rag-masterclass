@@ -1,0 +1,60 @@
+# Golden Q&A for California salesperson ethics PDF (Module 1 managed RAG).
+# The PDF itself is not committed — upload to OpenAI vector store "CC-RAG" locally.
+# See fixtures/README.md and rag-validation-playbook.md.
+
+fixture_id: ca-ethics-form
+description: Primary RAG golden fixture — ethics PDF and/or related CA form PDFs in the same vector store
+require_filename_match: false
+
+# manual — pre-indexed OpenAI vector store (Module 1 default)
+# upload — POST /documents/upload from file_env (Module 2+)
+# both    — upload when API exists, else manual verification
+ingestion_mode: manual
+
+source:
+  module1:
+    type: openai_vector_store
+    vector_store_id_env: OPENAI_VECTOR_STORE_ID
+    filename_contains: "Risk-CA Salesperson Ethics"  # optional hint; not enforced unless require_filename_match true
+  module2:
+    type: upload
+    file_env: RAG_FIXTURE_CA_ETHICS_PDF
+
+ingestion:
+  timeout_seconds: 300
+  poll_interval_seconds: 5
+  success_status: completed
+
+golden_queries:
+  - id: article-5
+    question: "what does the pdf say about article 5"
+    expect_any:
+      - "article 5"
+      - "professional services"
+      - "contemplated interest"
+      - "realtor"
+    reject_any:
+      - "upload the pdf"
+      - "upload the document"
+      - "please upload"
+
+  - id: blockbusting
+    question: "what does the pdf say about blockbusting"
+    expect_any:
+      - "blockbust"
+      - "fair housing"
+      - "minority"
+      - "discriminat"
+    reject_any:
+      - "upload the pdf"
+      - "upload the document"
+
+  - id: fair-housing-search
+    question: "search your documents and summarize fair housing topics"
+    expect_any:
+      - "fair housing"
+      - "discriminat"
+      - "familial"
+    reject_any:
+      - "upload the pdf"
+      - "retrieval-augmented generation"

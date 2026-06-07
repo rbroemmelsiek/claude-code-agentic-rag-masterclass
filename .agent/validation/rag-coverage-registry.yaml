@@ -1,0 +1,90 @@
+# RAG validation coverage registry — defines what the suite can prove and what manifests should supply.
+# rag-validation.py reports coverage against this file after each run.
+
+version: 1
+
+# Automated test IDs implemented in scripts/rag-validation.py
+tests:
+  RAG-01:
+    name: Health reports RAG enabled
+    required_from_module: 1
+    maps_to_langsmith_cases: [3]
+  RAG-02:
+    name: Ingestion/index gate (mode-dependent)
+    required_from_module: 1
+    maps_to_langsmith_cases: [2, 7]
+  RAG-03:
+    name: Golden query returns expected facts
+    required_from_module: 1
+    maps_to_langsmith_cases: [1, 4]
+  RAG-04:
+    name: Golden query rejects failure phrases
+    required_from_module: 1
+    maps_to_langsmith_cases: [1, 4]
+  RAG-05:
+    name: LangSmith trace includes file_search tools
+    required_from_module: 1
+    optional: true
+    maps_to_langsmith_cases: [1, 2, 3]
+  RAG-06:
+    name: SSE stream completes without error
+    required_from_module: 1
+    maps_to_langsmith_cases: [6]
+  RAG-07:
+    name: Document upload API (Module 2+)
+    required_from_module: 2
+    maps_to_langsmith_cases: [2, 7]
+  RAG-08:
+    name: Chunk count > 0 after ingestion (Module 2+)
+    required_from_module: 2
+    maps_to_langsmith_cases: [7]
+
+# Seven LangSmith debug cases from langsmith-debug-cheatsheet.md
+langsmith_cases:
+  1:
+    title: RAG doesn't see documents
+    covered_by: [RAG-03, RAG-04, RAG-05]
+    manifest_should_include: golden_queries with expect_any and reject_any upload phrases
+  2:
+    title: Vector store has files; app doesn't
+    covered_by: [RAG-01, RAG-02, RAG-05]
+    manifest_should_include: ingestion gate for manual or upload mode
+  3:
+    title: .env changed but backend stale
+    covered_by: [RAG-01]
+    manifest_should_include: health asserts rag_enabled and vector_store_id
+  4:
+    title: Thread poisoned
+    covered_by: [RAG-03]
+    manifest_should_include: script always uses new thread per query (built-in)
+  5:
+    title: Slow responses
+    covered_by: []
+    manifest_should_include: optional max_latency_seconds per golden_query (future)
+  6:
+    title: Hard errors
+    covered_by: [RAG-06]
+    manifest_should_include: at least one golden_query
+  7:
+    title: New files not indexed yet
+    covered_by: [RAG-02, RAG-07, RAG-08]
+    manifest_should_include: ingestion poll with timeout; upload mode for new files
+
+# Per-module minimum manifest requirements
+module_requirements:
+  1:
+    min_golden_queries: 2
+    ingestion_modes: [manual]
+    required_tests: [RAG-01, RAG-02, RAG-03, RAG-04, RAG-06]
+    recommended_tests: [RAG-05]
+  2:
+    min_golden_queries: 3
+    ingestion_modes: [upload, both]
+    required_tests: [RAG-01, RAG-02, RAG-03, RAG-04, RAG-06, RAG-07, RAG-08]
+    recommended_tests: [RAG-05]
+
+# Coverage score interpretation (printed after each run)
+coverage_guidance:
+  excellent: ">= 85% of applicable tests passing and manifest meets module_requirements"
+  acceptable: ">= 70% passing; document gaps in module-N-results.md"
+  insufficient: "< 70% or missing min_golden_queries — do not mark module complete"

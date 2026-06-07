@@ -1,0 +1,102 @@
+{
+  "timestamp": "2026-06-07T02:42:05.124914+00:00",
+  "module": 1,
+  "passed": 13,
+  "total": 13,
+  "results": [
+    {
+      "id": "RAG-AUTH",
+      "ok": true,
+      "detail": "test@test.com"
+    },
+    {
+      "id": "RAG-01",
+      "ok": true,
+      "detail": "{\"status\": \"ok\", \"rag_enabled\": true, \"vector_store_id\": \"vs_6907b572ade4819186385c830376b2c3\", \"tool_choice\": \"required\"}"
+    },
+    {
+      "id": "RAG-02",
+      "ok": true,
+      "detail": "[manual] vs=vs_6907b572ade4819186385c830376b2c3 files=20 completed=20 (filename hint not found; set require_filename_match: true to enforce)"
+    },
+    {
+      "id": "RAG-06:ca-ethics-form:article-5",
+      "ok": true,
+      "detail": "HTTP 200 len=394 err=None"
+    },
+    {
+      "id": "RAG-03:ca-ethics-form:article-5",
+      "ok": true,
+      "detail": "matched: ['article 5', 'professional services', 'contemplated interest', 'realtor']"
+    },
+    {
+      "id": "RAG-04:ca-ethics-form:article-5",
+      "ok": true,
+      "detail": "matched: ['article 5', 'professional services', 'contemplated interest', 'realtor']"
+    },
+    {
+      "id": "RAG-06:ca-ethics-form:blockbusting",
+      "ok": true,
+      "detail": "HTTP 200 len=589 err=None"
+    },
+    {
+      "id": "RAG-03:ca-ethics-form:blockbusting",
+      "ok": true,
+      "detail": "matched: ['blockbust', 'fair housing', 'minority']"
+    },
+    {
+      "id": "RAG-04:ca-ethics-form:blockbusting",
+      "ok": true,
+      "detail": "matched: ['blockbust', 'fair housing', 'minority']"
+    },
+    {
+      "id": "RAG-06:ca-ethics-form:fair-housing-search",
+      "ok": true,
+      "detail": "HTTP 200 len=1479 err=None"
+    },
+    {
+      "id": "RAG-03:ca-ethics-form:fair-housing-search",
+      "ok": true,
+      "detail": "matched: ['fair housing', 'discriminat', 'familial']"
+    },
+    {
+      "id": "RAG-04:ca-ethics-form:fair-housing-search",
+      "ok": true,
+      "detail": "matched: ['fair housing', 'discriminat', 'familial']"
+    },
+    {
+      "id": "RAG-05",
+      "ok": true,
+      "detail": "run 019e9ff5... has file_search"
+    }
+  ],
+  "coverage": {
+    "module": 1,
+    "rating": "excellent",
+    "rating_guidance": ">= 85% of applicable tests passing and manifest meets module_requirements",
+    "tests_applicable": 6,
+    "tests_passed": 6,
+    "tests_failed": 0,
+    "test_pass_pct": 100.0,
+    "langsmith_cases_addressed": 6,
+    "langsmith_cases_total": 7,
+    "langsmith_case_pct": 85.7,
+    "golden_queries": 4,
+    "min_golden_queries": 2,
+    "golden_queries_met": true,
+    "gaps": [],
+    "should_provide": [
+      ">= 2 golden_queries with expect_any and reject_any",
+      "ingestion_mode: one of ['manual']",
+      "LangSmith case 'RAG doesn't see documents': golden_queries with expect_any and reject_any upload phrases",
+      "LangSmith case 'Vector store has files; app doesn't': ingestion gate for manual or upload mode",
+      "LangSmith case '.env changed but backend stale': health asserts rag_enabled and vector_store_id",
+      "LangSmith case 'Thread poisoned': script always uses new thread per query (built-in)",
+      "LangSmith case 'Slow responses': optional max_latency_seconds per golden_query (future)",
+      "LangSmith case 'Hard errors': at least one golden_query",
+      "LangSmith case 'New files not indexed yet': ingestion poll with timeout; upload mode for new files",
+      "Record results in .agent/validation/module-1-results.md after run",
+      "Fixture 'ca-ethics-form' can add queries via YAML only (no code change)"
+    ]
+  }
+}

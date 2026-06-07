@@ -47,5 +47,13 @@ Verify: `curl http://localhost:8000/health` and open http://localhost:5173
 
 On native Windows, prefer PowerShell for `npm` and service scripts (Git Bash `npm` often produces no output).
 
+## Validation (end of module / build)
+
+```powershell
+powershell -File scripts/validate-all.ps1 -LangSmith
+```
+
+Record API + RAG scores and coverage rating in `.agent/validation/module-N-results.md` and `PROGRESS.md`. Do not mark a module complete if RAG rating is `insufficient`.
+
 ## Progress
 Check PROGRESS.md for current module status. Update it as you complete tasks.

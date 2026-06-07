@@ -10,10 +10,13 @@ from pathlib import Path
 import os
 
 import httpx
+from dotenv import load_dotenv
 
 _BACKEND = Path(__file__).resolve().parents[1] / "backend"
 if str(_BACKEND) not in sys.path:
     sys.path.insert(0, str(_BACKEND))
+
+load_dotenv(_BACKEND / ".env")
 
 from app.config import get_settings
 from app.db.supabase import get_supabase_client

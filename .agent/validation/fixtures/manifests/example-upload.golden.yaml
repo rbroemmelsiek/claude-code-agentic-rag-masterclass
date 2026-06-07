@@ -1,0 +1,28 @@
+# Example Module 2+ manifest — upload mode (enable when /documents/upload exists).
+# Copy and set file_env to your local test PDF or use small/ committed txt.
+
+fixture_id: example-upload
+description: Template for upload-based ingestion validation
+
+active: false
+min_module: 2
+ingestion_mode: upload
+
+source:
+  module2:
+    type: upload
+    file_env: RAG_FIXTURE_UPLOAD_PDF
+
+ingestion:
+  timeout_seconds: 120
+  poll_interval_seconds: 3
+  success_status: completed
+
+golden_queries:
+  - id: smoke-fact
+    question: "What specific fact from the uploaded document can you cite?"
+    expect_any:
+      - "document"
+    reject_any:
+      - "upload the pdf"
+      - "please upload"
